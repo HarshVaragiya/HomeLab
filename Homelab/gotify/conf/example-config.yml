@@ -1,0 +1,28 @@
+server:
+  keepaliveperiodseconds: 0 
+  listenaddr: "" # ALL
+  port: 80 # the port for the http server
+  ssl:
+    enabled: true 
+    redirecttohttps: true
+    listenaddr: "" # ALL
+    port: 443 # the https port
+    certfile: /etc/gotify/gotify.crt # the cert file (leave empty when using letsencrypt)
+    certkey: /etc/gotify/gotify.key  # the cert key (leave empty when using letsencrypt)
+    
+  stream:
+    pingperiodseconds: 45 
+    allowedorigins:
+    - my-vpn-domain.ddns.net
+
+database: 
+  dialect: sqlite3
+  connection: data/gotify.db
+  
+defaultuser:
+  name: admin
+  pass: 'admin_password_Is_s3cret'
+  
+passstrength: 12 # the bcrypt password strength
+uploadedimagesdir: data/images 
+#pluginsdir: data/plugins

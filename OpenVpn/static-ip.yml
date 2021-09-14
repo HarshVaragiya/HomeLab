@@ -1,0 +1,22 @@
+---
+- hosts: openvpn_server
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: Ensure Client Config Dir Exists
+      file:
+        path: /etc/openvpn/ccd
+        state: directory
+        
+    - name: Insert the static ip configuration
+      template: 
+        src: static_conf.j2
+        dest: /etc/openvpn/ccd/{{ client_name }}
+      notify: restart openvpn
+
+  handlers:
+    - name: restart openvpn
+      service:
+        name: 'openvpn@server'
+        state: restarted
