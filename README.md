@@ -7,6 +7,8 @@
 - OpenVPN in split tunnle mode to create private subnet over internet
 - DNS using pihole 
 
+![Network Infrastructure.png](assets/network-infrastructure.png)
+
 ## Source Code Management 
 - gitea running on local raspberry pi 
 
