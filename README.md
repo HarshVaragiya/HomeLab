@@ -1,5 +1,7 @@
 # HomeLab Setup 
 
+Read more about it here: https://medium.com/@harsh8v/experimenting-with-the-cloud-how-i-built-my-homelab-27bb1369083f
+
 ## AWS Infrastructure
 - AWS Cloudformation template for quick use EC2 instance
 
