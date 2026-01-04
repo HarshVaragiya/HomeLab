@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crawl4ai
+  namespace: infra
+  labels:
+    app: crawl4ai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawl4ai
+  template:
+    metadata:
+      labels:
+        app: crawl4ai
+    spec:
+      containers:
+      - name: crawl4ai
+        image: unclecode/crawl4ai:latest
+        ports:
+        - containerPort: 11235
+          name: web
+        resources:
+          limits:
+            memory: "1Gi"
+        volumeMounts:
+        - name: shared-memory
+          mountPath: /dev/shm
+      volumes:
+      - name: shared-memory
+        emptyDir:
+          medium: Memory
+          sizeLimit: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crawl4ai-service
+  namespace: infra
+  labels:
+    app: crawl4ai
+spec:
+  selector:
+    app: crawl4ai
+  ports:
+  - port: 11235
+    targetPort: 11235
+    protocol: TCP
+    name: web
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: crawl4ai-ingress
+  namespace: infra
+spec:
+  tls:
+    - hosts:
+        - crawl4ai.infra.pubkeypair.com
+      secretName: infra-pubkeypair-prod-tls
+  rules:
+    - host: crawl4ai.infra.pubkeypair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: crawl4ai-service
+                port:
+                  name: web

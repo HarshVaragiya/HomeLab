@@ -1,0 +1,46 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lab-ingress
+spec:
+  tls:
+    - hosts:
+        - lab.infra.pubkeypair.com
+      secretName: infra-pubkeypair-prod-tls
+  rules:
+    - host: lab.infra.pubkeypair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lab-svc
+                port:
+                  name: http
+                  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lab-svc
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8888  # Correct targetPort to match external service
+
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: lab-svc  # Must match Service name
+subsets:
+  - addresses:
+      - ip: 192.168.0.194  # Correct external IP (fix typo from 192.168...)
+    ports:
+      - name: http
+        port: 8888  # External service port
+        protocol: TCP

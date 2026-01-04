@@ -1,7 +1,0 @@
-subnet: '10.10.10.0/16'
-server_conf_file: conf/server.conf
-server_cert_file: certs/server.crt
-server_private_key: certs/server.key
-ca_certificate_file: certs/ca.crt
-dh_key_file: certs/dh.pem
-ta_key_file: certs/ta.key
